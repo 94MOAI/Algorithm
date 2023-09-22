@@ -1,44 +1,40 @@
-# import sys
-# input = sys.stdin.readline
-
-
-def BFS(current_node):
-    global answer
+def BFS(node):
     queue = []
-    queue.append(current_node)
-    visited[current_node] = 1
+    queue.append(node)
+
+    contact[node] = 1
+
     while queue:
-        node = queue.pop(0)
-        # if not graph[node]:
-        #     answer.append(node)
-        # print(node, end=" ")
-        for nxt in graph[node]:
-            if not visited[nxt]:
-                queue.append(nxt)
-                visited[nxt] = visited[node] + 1
+        now = queue.pop(0)
+
+        for nxt in adj[now]:
+            if contact[nxt]:
+                continue
+            queue.append(nxt)
+            contact[nxt] = contact[now] + 1
 
 
 for test_case in range(1, 10+1):
     N, S = map(int, input().split())
-    edges = list(map(int, input().split()))
+    adj_arr = list(map(int, input().split()))
 
-    graph = [[] for _ in range(100+1)]
+    adj = [[] for _ in range(100+1)]
+    for idx in range(0, N, 2):
+        s = adj_arr[idx]
+        e = adj_arr[idx + 1]
+        adj[s].append(e)
 
-    for idx in range(0, len(edges), 2):
-        u = edges[idx]
-        v = edges[idx+1]
-        graph[u].append(v)
-    # print(graph)
-    visited = [0] * (100 + 1)
-
+    contact = [0] * (100 + 1)
     BFS(S)
 
-    depth = max(visited)
-    answer = []
+    mx_contact = 0
     for idx in range(100+1):
-        if depth == visited[idx]:
-            answer.append(idx)
+        if mx_contact < contact[idx]:
+            mx_contact = contact[idx]
 
-    answer.sort()
+    mx_node = 0
+    for idx in range(100+1):
+        if contact[idx] == mx_contact and mx_node <= idx:
+            mx_node = idx
 
-    print(f'#{test_case} {answer[-1]}')
+    print(f'#{test_case} {mx_node}')
