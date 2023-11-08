@@ -1,16 +1,11 @@
-from collections import deque
-import sys
-
-input = sys.stdin.readline
-
 def bfs(start):
-    queue = deque()
+    queue = []
     queue.append(start)
 
     visited[start] = True
 
     while queue:
-        cp = queue.popleft()
+        cp = queue.pop(0)
 
         for d in range(1, 6+1):
             np = cp + d
