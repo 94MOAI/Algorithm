@@ -16,11 +16,9 @@ def bfs(start):
             np = cp + d
 
             if 0 < np <= 100 and not visited[np]:
-                if np in snake:
-                    np = snake[np]
-
-                if np in ladder:
-                    np = ladder[np]
+                if np in move:
+                    visited[np] = 1
+                    np = move[np]
 
                 if not visited[np]:
                     queue.append(np)
@@ -28,21 +26,17 @@ def bfs(start):
                     board[np] = board[cp] + 1
 
 
+
 N, M = map(int, input().split())
 
 board = [0 for idx in range (100+1)]
 visited = [0 for idx in range(100+1)]
 
-ladder = dict()
-for _ in range(N):
-    x, y = map(int,input().split())
-    ladder[x] = y
+move = dict()
 
-snake = dict()
-for _ in range(M):
-    u, v = map(int,input().split())
-    snake[u] = v
-
+for _ in range(N+M):
+    x, y = map(int, input().split())
+    move[x] = y
 
 bfs(1)
 print(board[100])
